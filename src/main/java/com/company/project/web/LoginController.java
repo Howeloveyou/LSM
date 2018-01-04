@@ -30,6 +30,8 @@ public class LoginController {
             @RequestParam String sid,
             @RequestParam String psw){
 
+        logger.info(sid);
+        logger.info(psw);
         Result result = new Result();
         Map<String,String> paramMap = new HashMap();
         if (StringUtils.isNotEmpty(sid) && !"".equals(sid)&&StringUtils.isNotEmpty(psw) && !"".equals(psw.trim())){

@@ -25,7 +25,7 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         student.setSid(sid);
         student.setPassword(psw);
         List<Student> list = studentMapper.select(student);
-        if (list != null){
+        if (list != null && list.size()>0){
             return list.get(0);
         }
         return null;
