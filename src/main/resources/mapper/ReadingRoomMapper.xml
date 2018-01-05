@@ -8,6 +8,5 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="floor" jdbcType="VARCHAR" property="floor" />
     <result column="room" jdbcType="VARCHAR" property="room" />
-    <result column="surplus" jdbcType="INTEGER" property="surplus" />
   </resultMap>
 </mapper>

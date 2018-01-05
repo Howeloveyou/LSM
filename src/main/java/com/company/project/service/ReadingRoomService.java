@@ -2,6 +2,7 @@ package com.company.project.service;
 import com.company.project.model.ReadingRoom;
 import com.company.project.core.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,5 +11,4 @@ import java.util.List;
  */
 public interface ReadingRoomService extends Service<ReadingRoom> {
 
-    List<ReadingRoom> getRoomList();
 }

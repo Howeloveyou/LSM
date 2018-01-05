@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.ReservationMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Reservation">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="reservation_date" jdbcType="DATE" property="reservationDate" />
+    <result column="moring" jdbcType="INTEGER" property="moring" />
+    <result column="afternoon" jdbcType="INTEGER" property="afternoon" />
+    <result column="night" jdbcType="INTEGER" property="night" />
+  </resultMap>
+</mapper>

@@ -11,6 +11,7 @@ public class ReadingRoom {
 
     private String room;
 
+    @Transient
     private Integer surplus;
 
     /**

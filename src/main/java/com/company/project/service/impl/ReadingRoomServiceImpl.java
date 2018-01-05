@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,8 +21,4 @@ public class ReadingRoomServiceImpl extends AbstractService<ReadingRoom> impleme
     @Resource
     private ReadingRoomMapper readingRoomMapper;
 
-    @Override
-    public List<ReadingRoom> getRoomList() {
-        return readingRoomMapper.selectAll();
-    }
 }
