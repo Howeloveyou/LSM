@@ -4,7 +4,10 @@ package com.company.project.web;
 import com.company.project.core.Result;
 import com.company.project.core.ResultCode;
 import com.company.project.model.ReadingRoom;
+import com.company.project.model.Reservation;
 import com.company.project.service.ReservationService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,15 +29,19 @@ public class ReservationController{
     @RequestMapping("/getRoomList")
     public Object getRoomList(
             @RequestParam String date,
-            @RequestParam String time
+            @RequestParam String time,
+            @RequestParam(required=false,defaultValue="1") Integer page,
+            @RequestParam(required=false,defaultValue="9") Integer pageSize
     ) throws Exception{
         logger.info(date.toString());
         logger.info(time);
         Result result = new Result();
-        List<ReadingRoom>list = reservationService.getRoomList(date,time);
+        PageHelper.startPage(page,pageSize);
+        List<ReadingRoom> list = reservationService.getRoomList(date,time);
+        PageInfo<ReadingRoom> pageInfo = new PageInfo<>(list);
         result.setCode(ResultCode.SUCCESS);
         result.setMessage("查询成功！");
-        result.setData(list);
+        result.setData(pageInfo);
         return result;
     }
 }

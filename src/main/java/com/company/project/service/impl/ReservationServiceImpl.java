@@ -45,8 +45,10 @@ public class ReservationServiceImpl extends AbstractService<Reservation> impleme
         logger.info(reservationMapper.selectAll().toString());
         logger.info(roomList.toString());
         logger.info(revList.toString());
+        logger.info(time);
         switch (time){
-            case "moring":
+            case "morning":
+                logger.info("switch do...");
                 setMoring(roomList,revList);
                 break;
             case "afternoon":
@@ -60,8 +62,12 @@ public class ReservationServiceImpl extends AbstractService<Reservation> impleme
     }
 
     private void setMoring(List<ReadingRoom> roomList, List<Reservation> revList) {
+        logger.info("do...");
         for (ReadingRoom room:roomList) {
+            logger.info(room.getId().toString());
             for (Reservation rev:revList) {
+
+                logger.info(rev.getRid().toString());
                 if (room.getId() == rev.getRid()){
                     room.setSurplus(rev.getMoring());
                 }
