@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.ujs.lsm.dao.RecordMapper">
+  <resultMap id="BaseResultMap" type="edu.ujs.lsm.model.Record">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sid" jdbcType="VARCHAR" property="sid" />
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="seat" jdbcType="INTEGER" property="seat" />
+    <result column="mark" jdbcType="INTEGER" property="mark" />
+  </resultMap>
+</mapper>

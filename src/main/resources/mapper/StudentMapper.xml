@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.company.project.dao.StudentMapper">
-  <resultMap id="BaseResultMap" type="com.company.project.model.Student">
+<mapper namespace="edu.ujs.lsm.dao.StudentMapper">
+  <resultMap id="BaseResultMap" type="edu.ujs.lsm.model.Student">
     <!--
       WARNING - @mbg.generated
     -->

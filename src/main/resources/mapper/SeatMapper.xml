@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="edu.ujs.lsm.dao.ReservationMapper">
-  <resultMap id="BaseResultMap" type="edu.ujs.lsm.model.Reservation">
+<mapper namespace="edu.ujs.lsm.dao.SeatMapper">
+  <resultMap id="BaseResultMap" type="edu.ujs.lsm.model.Seat">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="rid" jdbcType="INTEGER" property="rid" />
-    <result column="reservation_date" jdbcType="DATE" property="reservationDate" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="date" jdbcType="DATE" property="date" />
     <result column="morning" jdbcType="INTEGER" property="morning" />
     <result column="afternoon" jdbcType="INTEGER" property="afternoon" />
     <result column="night" jdbcType="INTEGER" property="night" />
