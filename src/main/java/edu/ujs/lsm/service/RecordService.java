@@ -2,6 +2,8 @@ package edu.ujs.lsm.service;
 import edu.ujs.lsm.model.Record;
 import edu.ujs.lsm.core.Service;
 
+import java.util.List;
+
 
 /**
  * @Description: TODO
@@ -11,4 +13,5 @@ import edu.ujs.lsm.core.Service;
  */
 public interface RecordService extends Service<Record> {
 
+    List<Record> findRecord(Record record);
 }

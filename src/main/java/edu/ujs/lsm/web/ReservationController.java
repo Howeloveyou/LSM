@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -50,15 +51,15 @@ public class ReservationController{
     @RequestMapping("/getRoomList")
     public Object getRoomList(
             @RequestParam String date,
-            @RequestParam String time,
+            @RequestParam String times,
             @RequestParam(required=false,defaultValue="1") Integer page,
             @RequestParam(required=false,defaultValue="9") Integer pageSize
     ) throws Exception{
         logger.info(date.toString());
-        logger.info(time);
+        logger.info(times);
         Result result = new Result();
         PageHelper.startPage(page,pageSize);
-        List<ReadingRoom> list = reservationService.getRoomList(date,time);
+        List<ReadingRoom> list = reservationService.getRoomList(date,times);
         PageInfo<ReadingRoom> pageInfo = new PageInfo<>(list);
         result.setCode(ResultCode.SUCCESS);
         result.setMessage("查询成功！");
@@ -99,24 +100,33 @@ public class ReservationController{
             @RequestParam String date,
             @RequestParam String time,
             @RequestParam Integer rid,
-            @RequestParam Integer seid,
-            @RequestParam Integer resid
+            @RequestParam Integer seid
     )throws Exception{
         Result result = new Result();
         Record record = new Record();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
         Date relDate = format.parse(date);
-        boolean flag = reservationService.changeSurplus(resid,time);
+        boolean flag = seatService.changeState(seid,time);
         logger.info(Boolean.toString(flag));
         if (flag){
-            seatService.changeState(seid,time);
             record.setDate(new java.sql.Date(relDate.getTime()));
             record.setSid(sid);
-            record.setTime(time);
-            record.setRid(rid);
-            record.setSeat(seid);
-            record.setMark(1);
-            recordService.save(record);
+            List<Record> list = recordService.findRecord(record);
+            if (list != null && list.size()>0){
+                record = list.get(0);
+                record.setTime(time);
+                record.setRid(rid);
+                record.setSeat(seid);
+                record.setMark(1);
+                recordService.update(record);
+            }else {
+                record.setTime(time);
+                record.setRid(rid);
+                record.setSeat(seid);
+                record.setMark(1);
+                recordService.save(record);
+            }
+
             result.setCode(ResultCode.SUCCESS);
             result.setMessage("预约成功!");
             return result;
@@ -126,7 +136,34 @@ public class ReservationController{
         return result;
     }
 
+    /*
+    *取消预约
+    *  @sid 学号
+    *
+    */
+    @RequestMapping("/cancelReservation")
+    public Object cancelReservation(
+            @RequestParam String sid,
+            @RequestParam String date
+    ) throws Exception {
+        Result result = new Result();
+        Record record = new Record();
+        Seat seat = new Seat();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        Date relDate = format.parse(date);
+        record.setDate(new java.sql.Date(relDate.getTime()));
+        record.setSid(sid);
+        List<Record> list= recordService.findRecord(record);
+        if (list != null && list.size()>0){
+            record = list.get(0);
+            String time = record.getTime();
+            seat.setRid(record.getRid());
+            seat.setNumber(record.getSeat().toString());
+            seatService.cancelSeat(date,time,seat);
+        }
 
+        return result;
+    }
 
 
 }

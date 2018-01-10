@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description: TODO
@@ -21,4 +22,8 @@ public class RecordServiceImpl extends AbstractService<Record> implements Record
     @Resource
     private RecordMapper recordMapper;
 
+    @Override
+    public List<Record> findRecord(Record record) {
+        return recordMapper.select(record);
+    }
 }

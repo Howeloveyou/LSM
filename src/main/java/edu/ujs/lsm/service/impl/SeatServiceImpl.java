@@ -4,12 +4,15 @@ import edu.ujs.lsm.dao.SeatMapper;
 import edu.ujs.lsm.model.Seat;
 import edu.ujs.lsm.service.SeatService;
 import edu.ujs.lsm.core.AbstractService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,21 +49,72 @@ public class SeatServiceImpl extends AbstractService<Seat> implements SeatServic
     }
 
     @Override
-    public void changeState(Integer seid,String time) {
+    public boolean changeState(Integer seid,String times) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+//        Seat seat = seatMapper.selectByPrimaryKey(seid);
+//        logger.info(Integer.toString(seat.getMorning()));
+//        switch (time){
+//            case "morning":
+//                seat.setMorning(0);
+//                break;
+//            case "afternoon":
+//                seat.setAfternoon(0);
+//                break;
+//            case "night":
+//                seat.setNight(0);
+//                break;
+//        }
+//        seatMapper.updateByPrimaryKey(seat);
+        String time [] = StringUtils.split(times,",");
         Seat seat = seatMapper.selectByPrimaryKey(seid);
-        logger.info(Integer.toString(seat.getMorning()));
-        switch (time){
-            case "morning":
+        Class<Seat> clazz = Seat.class;
+        if (time.length == 1){
+            String methodName0 = "get" + time[0].substring(0,1).toUpperCase() + time[0].substring(1);
+            String methodName1 = "set" + time[0].substring(0,1).toUpperCase() + time[0].substring(1);
+            Method method0 = clazz.getMethod(methodName0);
+            Method method1 = clazz.getMethod(methodName1,Integer.class);
+            int x = (Integer) method0.invoke(seat);
+            if (x != 0){
+                method1.invoke(seat,0);
+                seatMapper.updateByPrimaryKey(seat);
+                return true;
+            }
+        }else if (time.length == 2){
+            String methodName0 = "get" + time[0].substring(0,1).toUpperCase() + time[0].substring(1);
+            String methodName1 = "get" + time[1].substring(0,1).toUpperCase() + time[1].substring(1);
+            String methodName2 = "set" + time[0].substring(0,1).toUpperCase() + time[0].substring(1);
+            String methodName3 = "set" + time[1].substring(0,1).toUpperCase() + time[1].substring(1);
+            Method method0 = clazz.getMethod(methodName0);
+            Method method1 = clazz.getMethod(methodName1);
+            Method method2 = clazz.getMethod(methodName2,Integer.class);
+            Method method3 = clazz.getMethod(methodName3,Integer.class);
+            int x = (Integer) method0.invoke(seat);
+            int y = (Integer) method1.invoke(seat);
+            if (x != 0 && y != 0){
+                method2.invoke(seat,0);
+                method3.invoke(seat,0);
+                seatMapper.updateByPrimaryKey(seat);
+                return true;
+            }
+        }else if (time.length == 3){
+            int x = seat.getMorning();
+            int y = seat.getAfternoon();
+            int z = seat.getNight();
+            if (x != 0 && y != 0 && z != 0){
                 seat.setMorning(0);
-                break;
-            case "afternoon":
                 seat.setAfternoon(0);
-                break;
-            case "night":
                 seat.setNight(0);
-                break;
+                seatMapper.updateByPrimaryKey(seat);
+                return true;
+            }
+
         }
-        seatMapper.updateByPrimaryKey(seat);
+        return false;
     }
+
+    @Override
+    public void cancelSeat(String date, String time, Seat seat) {
+
+    }
+
 
 }
