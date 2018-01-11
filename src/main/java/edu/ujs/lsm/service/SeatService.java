@@ -15,9 +15,9 @@ import java.util.List;
  */
 public interface SeatService extends Service<Seat> {
 
-    List<Seat> getSeatList(Integer rid, String date) throws ParseException;
+    List<Seat> getSeatList(Integer rid, String date, String times) throws ParseException, NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 
-    boolean changeState(Integer seid,String time) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
+    boolean changeState(Integer seid, String time) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 
-    void cancelSeat(String date, String time, Seat seat);
+    void cancelSeat(String times, Integer seid) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException;
 }

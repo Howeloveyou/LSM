@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static edu.ujs.lsm.core.ProjectConstant.*;
 
 /**
  * @Description: TODO
@@ -29,7 +30,7 @@ import java.util.List;
  * @date 2018-1-4
  * @version V1.0
  */
-@Service
+@Service("reservationService")
 @Transactional
 public class ReservationServiceImpl extends AbstractService<Reservation> implements ReservationService {
 
@@ -45,7 +46,8 @@ public class ReservationServiceImpl extends AbstractService<Reservation> impleme
     private SeatMapper seatMapper;
 
     @Override
-    public List<ReadingRoom> getRoomList(String date, String times) throws ParseException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public List<ReadingRoom> getRoomList(String date, String times) throws ParseException,
+            NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 //        Reservation reservation = new Reservation();
 //        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
 //        Date relDate = format.parse(date);
@@ -79,7 +81,7 @@ public class ReservationServiceImpl extends AbstractService<Reservation> impleme
         if (time.length == 1){
             Class<Seat> clazz = Seat.class;
             String time0 = time[0];
-            time0 = "get" + time0.substring(0,1).toUpperCase() + time0.substring(1);
+            time0 = GET + time0.substring(0,1).toUpperCase() + time0.substring(1);
             Method method0 = clazz.getMethod(time0);
             for (ReadingRoom room : roomList){
                 seat.setDate(new java.sql.Date(relDate.getTime()));
@@ -100,8 +102,8 @@ public class ReservationServiceImpl extends AbstractService<Reservation> impleme
             Class<Seat> clazz = Seat.class;
             String time1 = time[0];
             String time2 = time[1];
-            time1 = "get" + time1.substring(0,1).toUpperCase() + time1.substring(1);
-            time2 = "get" + time2.substring(0,1).toUpperCase() + time2.substring(1);
+            time1 = GET + time1.substring(0,1).toUpperCase() + time1.substring(1);
+            time2 = GET + time2.substring(0,1).toUpperCase() + time2.substring(1);
             Method method1 = clazz.getMethod(time1);
             Method method2 = clazz.getMethod(time2);
             for (ReadingRoom room : roomList) {

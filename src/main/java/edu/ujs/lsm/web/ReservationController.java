@@ -74,12 +74,13 @@ public class ReservationController{
     @RequestMapping("/getSeatList")
     public Object getSeatList(
             @RequestParam Integer rid,
-            @RequestParam String date
+            @RequestParam String date,
+            @RequestParam String times
     ) throws Exception{
         logger.info(rid.toString());
         logger.info(date);
         Result result = new Result();
-        List<Seat> list = seatService.getSeatList(rid,date);
+        List<Seat> list = seatService.getSeatList(rid,date,times);
         result.setCode(ResultCode.SUCCESS);
         result.setMessage("查询成功!");
         result.setData(list);
@@ -148,7 +149,6 @@ public class ReservationController{
     ) throws Exception {
         Result result = new Result();
         Record record = new Record();
-        Seat seat = new Seat();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
         Date relDate = format.parse(date);
         record.setDate(new java.sql.Date(relDate.getTime()));
@@ -157,11 +157,16 @@ public class ReservationController{
         if (list != null && list.size()>0){
             record = list.get(0);
             String time = record.getTime();
-            seat.setRid(record.getRid());
-            seat.setNumber(record.getSeat().toString());
-            seatService.cancelSeat(date,time,seat);
+            Integer seid = record.getSeat();
+            seatService.cancelSeat(time,seid);
+            record.setMark(3);
+            recordService.update(record);
+            result.setCode(ResultCode.SUCCESS);
+            result.setMessage("取消成功！");
+            return result;
         }
-
+        result.setCode(ResultCode.FAIL);
+        result.setMessage("取消失败,我未查询到预约信息！");
         return result;
     }
 

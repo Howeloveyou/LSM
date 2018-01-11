@@ -3,6 +3,7 @@ import edu.ujs.lsm.model.Record;
 import edu.ujs.lsm.core.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -14,4 +15,6 @@ import java.util.List;
 public interface RecordService extends Service<Record> {
 
     List<Record> findRecord(Record record);
+
+    List<Map> getRecord(String sid);
 }
