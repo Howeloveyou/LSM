@@ -11,5 +11,5 @@ import java.text.ParseException;
 public interface StudentService extends Service<Student> {
     Student login (String sid, String psw);
 
-    boolean singIn(String sid, Integer rid, String seNum) throws ParseException;
+    int singIn(String sid, Integer rid, String seNum) throws ParseException;
 }

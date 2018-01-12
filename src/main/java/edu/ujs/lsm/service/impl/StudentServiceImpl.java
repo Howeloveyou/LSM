@@ -1,6 +1,7 @@
 package edu.ujs.lsm.service.impl;
 
 import edu.ujs.lsm.dao.RecordMapper;
+import edu.ujs.lsm.dao.SeatMapper;
 import edu.ujs.lsm.dao.StudentMapper;
 import edu.ujs.lsm.model.Record;
 import edu.ujs.lsm.model.Student;
@@ -15,7 +16,6 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 
@@ -37,6 +37,9 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     @Resource
     private RecordMapper recordMapper;
 
+    @Resource
+    private SeatMapper seatMapper;
+
     public Student login (String sid,String psw){
         Student student = new Student();
         student.setSid(sid);
@@ -49,15 +52,43 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
     }
 
     @Override
-    public boolean singIn(String sid, Integer rid, String seNum) throws ParseException {
+    public int singIn(String sid, Integer rid, String seNum) throws ParseException {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        Record record = new Record();
+        int flag = 3;
         String date = c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH)+ 1) + "-" + (c.get(Calendar.DATE));
         logger.info(date);
-        Record record = new Record();
         record.setDate(new java.sql.Date(format.parse(date).getTime()));
+        record.setSid(sid);
         List<Record> list = recordMapper.select(record);
         logger.info(list.toString());
-        return false;
+        if (list != null && list.size() > 0){
+            record = list.get(0);
+            switch (record.getMark()){
+                case 0:
+                    flag = 0;
+                    break;
+                case 1:
+                    flag = cheackSeat(record,rid,seNum);
+                    break;
+                case 2:
+                    flag = 2;
+                    break;
+            }
+
+        }
+        return flag;
     }
+
+    private int cheackSeat(Record record, Integer rid, String seNum) {
+        String Num = seatMapper.selectByPrimaryKey(record.getSeat()).getNumber();
+        if (rid.equals(record.getRid())  && seNum.equals(Num)){
+            record.setMark(0);
+            recordMapper.updateByPrimaryKey(record);
+            return 1;
+        }
+        return 3;
+    }
+
 }
