@@ -12,4 +12,6 @@ public interface StudentService extends Service<Student> {
     Student login (String sid, String psw);
 
     int singIn(String sid, Integer rid, String seNum) throws ParseException;
+
+    Student getStudent(String sid);
 }

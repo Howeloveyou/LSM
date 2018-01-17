@@ -9,5 +9,6 @@
     <result column="sid" jdbcType="VARCHAR" property="sid" />
     <result column="sname" jdbcType="VARCHAR" property="sname" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="mark" jdbcType="INTEGER" property="mark" />
   </resultMap>
 </mapper>

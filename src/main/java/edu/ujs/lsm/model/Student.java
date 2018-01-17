@@ -13,6 +13,16 @@ public class Student {
 
     private String password;
 
+    private Integer mark;
+
+
+    public Integer getMark(){
+        return mark;
+    }
+
+    public void setMark(Integer mark){
+        this.mark = mark;
+    }
     /**
      * @return id
      */

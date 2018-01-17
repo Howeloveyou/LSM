@@ -81,6 +81,14 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
         return flag;
     }
 
+    @Override
+    public Student getStudent(String sid) {
+        Student student = new Student();
+        student.setSid(sid);
+        List<Student> list = studentMapper.select(student);
+        return list.size() > 0 ? list.get(0):null;
+    }
+
     private int cheackSeat(Record record, Integer rid, String seNum) {
         String Num = seatMapper.selectByPrimaryKey(record.getSeat()).getNumber();
         if (rid.equals(record.getRid())  && seNum.equals(Num)){

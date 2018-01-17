@@ -38,12 +38,13 @@ public class LoginController {
         logger.info(sid);
         logger.info(psw);
         Result result = new Result();
-        Map<String,String> paramMap = new HashMap();
+        Map<String,Object> paramMap = new HashMap();
         if (StringUtils.isNotEmpty(sid) && !"".equals(sid)&&StringUtils.isNotEmpty(psw) && !"".equals(psw.trim())){
             Student student = studentService.login(sid,psw);
             if (student != null){
                 paramMap.put("sname",student.getSname());
                 paramMap.put("sid",sid);
+                paramMap.put("mark",student.getMark());
                 result.setCode(ResultCode.SUCCESS);
                 result.setMessage("登录成功！");
                 result.setData(paramMap);

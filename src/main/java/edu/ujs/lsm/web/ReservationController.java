@@ -6,10 +6,8 @@ import edu.ujs.lsm.core.ResultCode;
 import edu.ujs.lsm.model.ReadingRoom;
 import edu.ujs.lsm.model.Record;
 import edu.ujs.lsm.model.Seat;
-import edu.ujs.lsm.service.ReadingRoomService;
-import edu.ujs.lsm.service.RecordService;
-import edu.ujs.lsm.service.ReservationService;
-import edu.ujs.lsm.service.SeatService;
+import edu.ujs.lsm.model.Student;
+import edu.ujs.lsm.service.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -45,6 +43,9 @@ public class ReservationController{
 
     @Resource
     ReadingRoomService readingRoomService;
+
+    @Resource
+    StudentService studentService;
 
     private final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
@@ -131,7 +132,11 @@ public class ReservationController{
                 record.setMark(1);
                 recordService.save(record);
             }
-
+            Student student = studentService.getStudent(sid);
+            if (student != null) {
+                student.setMark(1);
+                studentService.update(student);
+            }
             result.setCode(ResultCode.SUCCESS);
             result.setMessage("预约成功!");
             return result;
@@ -165,6 +170,11 @@ public class ReservationController{
             seatService.cancelSeat(time,seid);
             record.setMark(3);
             recordService.update(record);
+            Student student = studentService.getStudent(sid);
+            if (student != null) {
+                student.setMark(0);
+                studentService.update(student);
+            }
             result.setCode(ResultCode.SUCCESS);
             result.setMessage("取消成功！");
             return result;
