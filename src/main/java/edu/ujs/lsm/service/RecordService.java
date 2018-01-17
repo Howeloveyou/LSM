@@ -17,4 +17,6 @@ public interface RecordService extends Service<Record> {
     List<Record> findRecord(Record record);
 
     List<Map> getRecord(String sid);
+
+    Map<String,Object> getSignInfo(String sid);
 }

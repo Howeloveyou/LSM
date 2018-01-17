@@ -6,6 +6,7 @@ import edu.ujs.lsm.core.ResultCode;
 import edu.ujs.lsm.model.ReadingRoom;
 import edu.ujs.lsm.model.Record;
 import edu.ujs.lsm.model.Seat;
+import edu.ujs.lsm.service.ReadingRoomService;
 import edu.ujs.lsm.service.RecordService;
 import edu.ujs.lsm.service.ReservationService;
 import edu.ujs.lsm.service.SeatService;
@@ -41,6 +42,9 @@ public class ReservationController{
 
     @Resource
     RecordService recordService;
+
+    @Resource
+    ReadingRoomService readingRoomService;
 
     private final Logger logger = LoggerFactory.getLogger(ReservationController.class);
 
@@ -144,15 +148,15 @@ public class ReservationController{
     */
     @RequestMapping("/cancelReservation")
     public Object cancelReservation(
-            @RequestParam String sid,
-            @RequestParam String date
+            @RequestParam String sid
     ) throws Exception {
         Result result = new Result();
         Record record = new Record();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-        Date relDate = format.parse(date);
-        record.setDate(new java.sql.Date(relDate.getTime()));
+        //SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        //Date relDate = format.parse(date);
+        //record.setDate(new java.sql.Date(relDate.getTime()));
         record.setSid(sid);
+        record.setMark(1);
         List<Record> list= recordService.findRecord(record);
         if (list != null && list.size()>0){
             record = list.get(0);
@@ -170,5 +174,13 @@ public class ReservationController{
         return result;
     }
 
-
+    @RequestMapping("/getRoom")
+    public Object getRoom(@RequestParam Integer rid){
+        Result result = new Result();
+        ReadingRoom readingRoom =readingRoomService.findById(rid);
+        result.setCode(ResultCode.SUCCESS);
+        result.setMessage("查询成功！");
+        result.setData(readingRoom);
+        return result;
+    }
 }

@@ -35,5 +35,14 @@ public class RecordController {
         result.setData(params);
         return result;
     }
-    
+
+    @RequestMapping("/getSignInfo")
+    public Object getSignInfo(@RequestParam String sid){
+        Result result = new Result();
+        Map<String,Object> params = recordService.getSignInfo(sid);
+        result.setCode(ResultCode.SUCCESS);
+        result.setMessage("查询成功！");
+        result.setData(params);
+        return result;
+    }
 }
